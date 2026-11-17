@@ -992,10 +992,11 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 .hero-grid, .footer-grid { grid-template-columns: 1fr; }
 .hero-photo img { height: 700px; }
 .panel-grid { grid-template-columns: 1fr; }
-.table-wrap table { display: none; }
+.table-wrap table:not(.temp-table) { display: none; }
 .mobile-cards { display: flex; }
 .stats { grid-template-columns: 1fr; }
-}
+.temp-table { min-width: 620px; }
+.temp-table th, .temp-table td { padding: 12px 14px; font-size: 0.85rem; }
 /* Histórico de medalhas */
 .medal-section { margin-top: 56px; }
 .medal-list { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 10px; }
