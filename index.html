@@ -28,14 +28,6 @@
   --danger: #c0262d;
   --warning: #8a5300;
 }
-/* Theme resolution. Without data-theme the viewer's system preference decides,
-   as it always did. With it, the artifact's own choice wins in BOTH directions:
-   a page that hardcodes one palette must not be handed the opposite set of
-   tokens by the machine it happens to be opened on. The dark values appear
-   twice because a media query cannot be folded into a selector list.
-   The attribute sits inside :where() so these blocks keep the specificity of a
-   bare :root — the page's own <style> is linked after this file and must go on
-   overriding any token it wants, exactly as it could before. */
 @media (prefers-color-scheme: dark) {
   :root:where(:not([data-theme="light"])) {
     --accent-text: color-mix(in srgb, var(--accent) 78%, #fff);
@@ -64,12 +56,6 @@
   --warning: #fbbf24;
 }
 :root:where([data-theme="light"]) { color-scheme: light; }
-/* Pages generated before the shell had its own components still link the
-   basecoat CDN, which reads its own tokens and switches theme only on a
-   .dark class. Bridged to the shell's, whatever of it those pages use takes
-   the page's accent and follows the declared theme. Its --accent token is a
-   hover tint, renamed in its theme as --color-accent; the shell's --accent is
-   the brand colour, so the tint is derived from it here. */
 :root {
   --background: var(--bg);
   --foreground: var(--text);
@@ -90,11 +76,7 @@
   --ring: var(--accent);
 }
 * { box-sizing: border-box; }
-/* The reset the pages were written against: they all linked basecoat, which
-   ships Tailwind's. Its components now live here, so the reset does too. */
 *, ::before, ::after, ::backdrop { margin: 0; padding: 0; border: 0 solid; }
-/* Preflight's rule too: without it a component class that sets display
-   (.alert, .card, .btn…) beats the hidden attribute and shows the element. */
 [hidden]:where(:not([hidden="until-found"])) { display: none !important; }
 .hidden { display: none !important; }
 h1, h2, h3, h4, h5, h6 { font-size: inherit; font-weight: inherit; }
@@ -114,17 +96,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img { max-width: 100%; display: block; }
-
 .shell-container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 .shell-section { padding: calc(var(--space) * 2) 0; }
 .shell-grid { display: grid; gap: var(--space); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .shell-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: var(--space); }
 .shell-footer { padding: 24px 0 40px; color: var(--text-muted); font-size: 13px; }
-
 .shell-hero { padding: calc(var(--space) * 3) 0 calc(var(--space) * 2); }
 .shell-hero h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.15; margin: 0 0 10px; text-wrap: balance; }
 .shell-hero p { color: var(--text-muted); max-width: 60ch; margin: 0; }
-
 .panel {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -132,14 +111,12 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--shadow);
   padding: var(--space);
 }
-
 .kpi { display: flex; flex-direction: column; gap: 4px; }
 .kpi .kpi-value { font-size: clamp(22px, 2.3vw, 28px); font-weight: 650; line-height: 1.1; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
 .kpi .kpi-label { font-size: 13px; color: var(--text-muted); }
 .kpi .kpi-delta { font-size: 12.5px; font-weight: 600; }
 .kpi .kpi-delta.up { color: var(--success); }
 .kpi .kpi-delta.down { color: var(--danger); }
-
 table.shell-table { border-collapse: collapse; width: 100%; font-size: 14px; }
 table.shell-table th {
   text-align: left; font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase;
@@ -148,14 +125,12 @@ table.shell-table th {
 table.shell-table th, table.shell-table td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--border); }
 table.shell-table td.num, table.shell-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
 table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
-
 .chart-box { width: 100%; min-height: 220px; }
 .chart-box svg { width: 100%; height: auto; display: block; }
 .chart-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; margin-top: 12px; font-size: 12.5px; color: var(--text-muted); }
 .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
 .chart-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 .chart-legend b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
-
 .muted { color: var(--text-muted); }
 .accent { color: var(--accent-text); }
 .shell-badge, .eyebrow {
@@ -163,17 +138,11 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
   font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
   background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent-text);
 }
-/* A pill keeps its content width inside flex and grid columns, which would
-   otherwise stretch it across the card; a centred parent still centres it. */
 .shell-badge, .eyebrow, .badge { width: fit-content; max-width: 100%; }
-
 @media (prefers-reduced-motion: no-preference) {
   .shell-fade { animation: shell-fade 400ms ease both; }
   @keyframes shell-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 }
-
-/* Layout and type utilities: what the pages kept spelling in style="".
-   Spacing and type sizes follow Tailwind's scale; there is no Tailwind. */
 .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .stack { display: flex; flex-direction: column; gap: var(--space); }
 .between { justify-content: space-between; }
@@ -201,15 +170,9 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
 .w-full { width: 100%; }
 .text-success { color: var(--success); } .text-danger { color: var(--danger); } .text-warning { color: var(--warning); }
-
-/* Components, with basecoat 1.0 markup (variants and sizes are data
-   attributes) and the shell tokens, so a page needs neither component CSS
-   nor a CSS framework. An older page that also links basecoat gets these
-   rules after it, over the same properties. */
 button, input, select, textarea { font: inherit; }
 input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   height: 36px; padding: 0 14px; border: 1px solid transparent; border-radius: calc(var(--radius) - 2px);
@@ -230,7 +193,6 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 .btn[data-size="sm"] { height: 30px; padding: 0 10px; font-size: 13px; }
 .btn[data-size="lg"] { height: 42px; padding: 0 20px; font-size: 15px; }
 .btn[data-size="icon"] { width: 36px; padding: 0; }
-
 .badge {
   display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px;
   border: 1px solid transparent; border-radius: 999px; background: var(--accent); color: var(--accent-contrast);
@@ -239,7 +201,6 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 .badge[data-variant="secondary"] { background: color-mix(in srgb, var(--text) 8%, var(--surface)); color: var(--text); }
 .badge[data-variant="outline"] { background: transparent; color: var(--text); border-color: var(--border); }
 .badge[data-variant="destructive"] { background: color-mix(in srgb, var(--danger) 14%, var(--surface)); color: var(--danger); }
-
 .alert {
   display: grid; gap: 4px; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--surface); color: var(--text); font-size: 14px;
@@ -247,7 +208,6 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 .alert h2, .alert h3 { margin: 0; font-size: 14px; font-weight: 600; }
 .alert p, .alert section { margin: 0; color: var(--text-muted); }
 .alert[data-variant="destructive"] { border-color: color-mix(in srgb, var(--danger) 45%, var(--border)); background: color-mix(in srgb, var(--danger) 7%, var(--surface)); color: var(--danger); }
-
 .card {
   display: flex; flex-direction: column; gap: 16px; padding: 20px 0;
   border: 1px solid var(--border); border-radius: calc(var(--radius) + 2px);
@@ -258,7 +218,6 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 .card > header h2, .card > header h3 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.3; }
 .card > header p { margin: 0; color: var(--text-muted); font-size: 14px; }
 .card > footer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-
 .input {
   width: 100%; min-height: 36px; padding: 6px 12px; border: 1px solid var(--border); border-radius: calc(var(--radius) - 2px);
   background: var(--surface); color: var(--text); font-size: 14px;
@@ -269,7 +228,6 @@ textarea.input { min-height: 84px; resize: vertical; }
 .field { display: grid; gap: 6px; }
 .field label { font-size: 14px; font-weight: 500; }
 .field [role="alert"] { color: var(--danger); font-size: 13px; }
-
 dialog.dialog {
   width: min(520px, calc(100vw - 32px)); max-height: calc(100vh - 32px); margin: auto; padding: 0;
   border: 1px solid var(--border); border-radius: calc(var(--radius) + 4px);
@@ -281,7 +239,6 @@ dialog.dialog header { display: grid; gap: 4px; }
 dialog.dialog header h2 { margin: 0; font-size: 18px; font-weight: 600; }
 dialog.dialog header p { margin: 0; color: var(--text-muted); font-size: 14px; }
 dialog.dialog footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-
 .tabs { display: grid; gap: 12px; }
 .tabs > [role="tablist"] {
   display: inline-flex; gap: 4px; width: fit-content; max-width: 100%; padding: 4px; overflow-x: auto;
@@ -293,7 +250,6 @@ dialog.dialog footer { display: flex; flex-wrap: wrap; justify-content: flex-end
 }
 .tabs [role="tab"][aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
 .tabs [role="tabpanel"][hidden] { display: none; }
-
 .accordion > details { border-bottom: 1px solid var(--border); }
 .accordion > details > summary {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -303,7 +259,6 @@ dialog.dialog footer { display: flex; flex-wrap: wrap; justify-content: flex-end
 .accordion > details > summary::after { content: "+"; color: var(--text-muted); font-size: 18px; line-height: 1; }
 .accordion > details[open] > summary::after { content: "\2212"; }
 .accordion > details > :not(summary) { margin: 0 0 14px; color: var(--text-muted); }
-
 .toaster {
   position: fixed; right: 16px; bottom: 16px; z-index: 50; display: flex; flex-direction: column-reverse; gap: 8px;
   width: min(360px, calc(100vw - 32px)); pointer-events: none;
@@ -316,8 +271,6 @@ dialog.dialog footer { display: flex; flex-wrap: wrap; justify-content: flex-end
 }
 .toaster .toast-content h2 { margin: 0 0 2px; font-size: 14px; font-weight: 600; }
 .toaster .toast-content p { margin: 0; color: var(--text-muted); }
-
-/* skipUI building blocks. */
 .skip-table-search { max-width: 320px; margin-bottom: 12px; }
 .skip-table-wrap { overflow-x: auto; }
 table.shell-table th[data-sort] { cursor: pointer; user-select: none; }
@@ -327,23 +280,11 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
 .skip-pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; font-size: 13px; color: var(--text-muted); }
 .toaster .toast[data-type="success"] .toast-content { border-left: 3px solid var(--success); }
 .toaster .toast[data-type="error"] .toast-content { border-left: 3px solid var(--danger); }
-
-    .medal-section { margin-top: 8px; }
-    .medal-list { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 10px; }
-    .medal-list li { display: flex; gap: 12px; align-items: flex-start; padding-bottom: 10px; border-bottom: 1px solid #27272a; }
-    .medal-list li:last-child { border-bottom: none; padding-bottom: 0; }
-    .medal-list strong { display: block; font-size: 0.92rem; color: #fafafa; font-weight: 600; line-height: 1.35; }
-    .medal-list small { display: block; font-size: 0.78rem; color: #a1a1aa; margin-top: 2px; }
-    .medal { flex-shrink: 0; font-size: 0.72rem; letter-spacing: 0.08em; padding: 4px 9px; border-radius: 999px; border: 1px solid; min-width: 62px; text-align: center; }
-    .medal.ouro { color: #facc15; border-color: rgba(250,204,21,0.45); background: rgba(250,204,21,0.08); }
-    .medal.prata { color: #d4d4d8; border-color: rgba(212,212,216,0.45); background: rgba(212,212,216,0.08); }
-    .medal.bronze { color: #d97706; border-color: rgba(217,119,6,0.45); background: rgba(217,119,6,0.08); }
 </style>
 <script>
 /* Skip artifact shell — fixed helpers served beside every artifact. */
 (function () {
   "use strict";
-
   var fmt = {
     num: function (v, opts) { return new Intl.NumberFormat("pt-BR", opts || {}).format(v); },
     brl: function (v) { return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v); },
@@ -351,10 +292,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     compact: function (v) { return new Intl.NumberFormat("pt-BR", { notation: "compact", maximumFractionDigits: 1 }).format(v); },
     brlCompact: function (v) { return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", notation: "compact", maximumFractionDigits: 1 }).format(v); }
   };
-
-  // axisLabels formats the five y-axis ticks in the unit the chart declared
-  // (percent, BRL or plain numbers), compact so long values never clip, with
-  // the fewest decimals that still print every tick exactly (1,5 mi, not 2 mi).
   function axisLabels(format, ticks) {
     function at(digits) {
       var opts = { notation: "compact", maximumFractionDigits: digits };
@@ -368,9 +305,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     }
     return at(2);
   }
-
-  // yAxisPad formats the ticks and measures the left padding they need from
-  // the longest one; drawYAxis then draws the grid and the labels.
   function yAxisPad(format, max) {
     var labels = axisLabels(format, [0, max / 4, max / 2, (max * 3) / 4, max]);
     var longest = labels.reduce(function (m, l) { return Math.max(m, l.length); }, 0);
@@ -385,9 +319,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       svg.appendChild(lbl);
     }
   }
-
-  // xLabelStep: show every k-th category label so labels never overlap, and
-  // always the last one (counted back from the end).
   function xLabelStep(labels, step) {
     var longest = labels.reduce(function (m, l) { return Math.max(m, String(l).length); }, 0);
     return Math.max(1, Math.ceil((longest * 6.4 + 8) / Math.max(step, 1)));
@@ -401,9 +332,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     tx.textContent = text;
     svg.appendChild(tx);
   }
-  // categoryLines fits a bar's category name in its slot: one line, two lines
-  // split at a space, or cut with "…". A bar without its name can't be read, so
-  // categories are never skipped; null when the slot is too narrow for that.
   function categoryLines(text, slot) {
     var fit = Math.floor((slot - 6) / 6.4);
     var s = String(text);
@@ -436,10 +364,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     resolve(el).appendChild(box);
   }
   var seriesPalette = ["#1baf7a", "#eda100", "#e34948", "#4a3aa7", "#e87ba4", "#0ea5b7"];
-
-  // format accepts a function OR one of the fmt names ("num" | "brl" | "pct").
-  // A page's function may return nothing or throw: the chart prints its
-  // number instead of taking the rest of the page script down with it.
   function coerceFormat(spec) {
     if (typeof spec === "function") {
       return function (v) {
@@ -454,7 +378,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     if (typeof spec === "string" && fmt[spec]) return fmt[spec];
     return function (v) { return fmt.num(v); };
   }
-
   function accent() {
     return getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#2563eb";
   }
@@ -473,32 +396,19 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     el.appendChild(svg);
     return svg;
   }
-
-  // maxOf guards the axis scale: empty values would give -Infinity (truthy,
-  // so "|| 1" can't catch it) and a non-positive max would flip the chart.
-  // finite reads a chart value as a number, 0 when it is not one (NaN,
-  // Infinity, a stray string), so one bad value cannot blank the axis.
   function finite(v) {
     var n = +v;
     return isFinite(n) ? n : 0;
   }
-
   function maxOf(values) {
     var m = values.length ? Math.max.apply(null, values.map(finite)) : 0;
     return m > 0 ? m : 1;
   }
-
-  // labelsFor pads or trims the category names to the n points drawn: pages
-  // pass labels and values of different lengths, and one throw here loses
-  // every section the page renders after the chart.
   function labelsFor(cfg, n) {
     var out = [];
     for (var i = 0; i < n; i++) out.push(cfg.labels && cfg.labels[i] != null ? String(cfg.labels[i]) : "");
     return out;
   }
-
-  // niceMax rounds the scale up so the four grid steps land on round values
-  // (1, 1.5, 2, 2.5, 3, 4, 5, 6 or 8 × 10^k) and the tick labels read exactly.
   function niceMax(max) {
     var raw = max / 4;
     var mag = Math.pow(10, Math.floor(Math.log10(raw)));
@@ -507,8 +417,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     var nice = steps.filter(function (s) { return s >= res - 1e-9; })[0];
     return nice * mag * 4;
   }
-
-  // bar(el, {labels:[], values:[], color?, format?}) — vertical bar chart.
   function bar(el, cfg) {
     var W = 640, H = 280, padB = 30, padT = 12, padR = 12;
     var max = niceMax(maxOf(cfg.values));
@@ -544,9 +452,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       }
     });
   }
-
-  // line(el, {labels:[], values:[] | series:[{label, values, color?}], color?, format?})
-  // — one line, or several series on one scale with a legend under the chart.
   function line(el, cfg) {
     var W = 640, H = 280, padB = 30, padT = 12, padR = 16;
     var series = cfg.series && cfg.series.length
@@ -587,15 +492,9 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       legend(el, series.map(function (s, si) { return { label: s.label, color: colors[si] }; }));
     }
   }
-
-  // donut(el, {labels:[], values:[], colors?, format?, center?, centerLabel?, legend?})
-  // — donut with a short total in the centre (compact, in the declared unit)
-  // and, with legend: true, the labels and shares listed under it.
   function donut(el, cfg) {
     var W = 320, H = 280, cx = W / 2, cy = H / 2, R = 92, r = 58;
     var svg = frame(el, W, H);
-    // At 100% of a wide container the donut outgrows the height pages give
-    // the box and spills over the next section: keep it at its own size.
     svg.style.maxWidth = W + "px";
     svg.style.margin = "0 auto";
     var values = cfg.values.map(finite);
@@ -603,7 +502,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     var sum = values.reduce(function (a, b) { return a + b; }, 0);
     var total = sum || 1;
     var palette = cfg.colors || [accent()].concat(seriesPalette);
-    // The hover keeps the full value; the centre has room for a short one.
     var full = coerceFormat(cfg.format);
     var short = typeof cfg.format === "function" ? full : cfg.format === "brl" ? fmt.brlCompact : fmt.compact;
     var a0 = -Math.PI / 2;
@@ -621,8 +519,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       svg.appendChild(path);
       a0 = a1;
     });
-    // A share chart has no total worth printing: without its own centre text
-    // the caption alone takes the middle.
     var text = cfg.center != null ? String(cfg.center) : (cfg.format === "pct" ? "" : short(sum));
     if (text) {
       var size = text.length > 9 ? 14 : text.length > 7 ? 17 : 20;
@@ -641,44 +537,27 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       }));
     }
   }
-
-  // ---- Page building blocks: what dashboards and small systems kept
-  // re-implementing — a searchable sortable table, a KPI row, tabs, toasts,
-  // dialogs, saved state and mock data. Every call is opt-in, so a page that
-  // brings its own versions keeps them.
-
   function resolve(target) {
     return typeof target === "string" ? document.querySelector(target) : target;
   }
-
   function node(tag, className, text) {
     var el = document.createElement(tag);
     if (className) el.className = className;
     if (text != null) el.textContent = text;
     return el;
   }
-
   function isNumberColumn(col) {
     return col.align === "right" || col.format === "num" || col.format === "brl" || col.format === "pct";
   }
-
   function cellText(col, row) {
     var value = row[col.key];
     if (value == null) return "";
     return col.format ? coerceFormat(col.format)(value) : String(value);
   }
-
   function compareValues(a, b) {
     if (typeof a === "number" && typeof b === "number") return a - b;
     return String(a == null ? "" : a).localeCompare(String(b == null ? "" : b), "pt-BR", { numeric: true });
   }
-
-  // table(el, {columns, rows, search?, pageSize?, empty?, onRowClick?}) — a
-  // table.shell-table with sortable headers, an optional search box and
-  // pager. A column is {key, label, format?, align?, sortable? (true),
-  // render?(value, row) returning a Node or an HTML string — the page writes
-  // its cell templates as markup}. Plain values are always set as text.
-  // Returns {setRows, rows}.
   function table(target, cfg) {
     var root = resolve(target);
     var cols = cfg.columns || [];
@@ -728,7 +607,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     wrap.appendChild(tableEl);
     root.appendChild(wrap);
     if (pageSize) root.appendChild(pager);
-
     function visibleRows() {
       var rows = state.rows;
       if (state.query) {
@@ -742,7 +620,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       }
       return rows;
     }
-
     function drawRow(row) {
       var tr = node("tr");
       cols.forEach(function (col) {
@@ -756,8 +633,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
         }
         tr.appendChild(td);
       });
-      // The row stays a row (no role) and takes focus, so a keyboard reaches
-      // the same action; keys pressed on a control inside a cell are its own.
       if (cfg.onRowClick) {
         tr.style.cursor = "pointer";
         tr.tabIndex = 0;
@@ -770,7 +645,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       }
       return tr;
     }
-
     function pagerButton(label, disabled, step) {
       var button = node("button", "btn", label);
       button.type = "button";
@@ -780,7 +654,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       button.addEventListener("click", function () { state.page += step; draw(); });
       return button;
     }
-
     function draw() {
       var rows = visibleRows();
       heads.forEach(function (th, i) {
@@ -806,16 +679,12 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       nav.appendChild(pagerButton("Próxima", state.page >= pages - 1, 1));
       pager.appendChild(nav);
     }
-
     draw();
     return {
       setRows: function (rows) { state.rows = rows.slice(); draw(); },
       rows: visibleRows
     };
   }
-
-  // kpis(el, [{label, value, format?, delta?, hint?}]) — KPI cards in a
-  // responsive grid; delta is a fraction (0.12 renders as ▲ 12%).
   function kpis(target, items) {
     var root = resolve(target);
     root.innerHTML = "";
@@ -823,8 +692,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     items.forEach(function (item) {
       var card = node("div", "panel kpi");
       card.appendChild(node("span", "kpi-label", item.label));
-      // Large money values go compact ("R$ 27,5 mi"): the full amount does
-      // not fit a KPI card at four per row.
       var kpiFormat = item.format === "brl" && Math.abs(item.value) >= 1e6 ? fmt.brlCompact : (item.format ? coerceFormat(item.format) : null);
       card.appendChild(node("span", "kpi-value", kpiFormat ? kpiFormat(item.value) : String(item.value)));
       if (typeof item.delta === "number") {
@@ -835,17 +702,11 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       root.appendChild(card);
     });
   }
-
-  // badge(text, variant?) — a .badge node for table cells and lists;
-  // variant is "secondary" | "outline" | "destructive" (default: primary).
   function badge(text, variant) {
     var el = node("span", "badge", text);
     if (variant) el.setAttribute("data-variant", variant);
     return el;
   }
-
-  // tabs(el) — wires one .tabs block: [role=tab] buttons inside
-  // [role=tablist], each with aria-controls naming its [role=tabpanel].
   function tabs(target) {
     var root = resolve(target);
     var buttons = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
@@ -870,9 +731,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     });
     select(buttons.filter(function (b) { return b.getAttribute("aria-selected") === "true"; })[0] || buttons[0]);
   }
-
-  // toast(message, {type?: "success" | "error", title?, duration?}) — a
-  // .toast in a shared .toaster at the bottom of the page.
   function toast(message, opts) {
     opts = opts || {};
     var toaster = document.querySelector(".toaster") || document.body.appendChild(node("div", "toaster"));
@@ -893,10 +751,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       setTimeout(function () { item.remove(); }, 400);
     }, opts.duration || 3000);
   }
-
-  // Dialogs are native <dialog class="dialog">: a [data-dialog-open="id"]
-  // anywhere opens one, a [data-dialog-close] inside closes it, and a click on
-  // its backdrop closes it too. Plain dialog.showModal()/close() still work.
   document.addEventListener("click", function (e) {
     var target = e.target;
     if (!(target instanceof Element)) return;
@@ -913,13 +767,8 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     }
     if (target.tagName === "DIALOG" && target.classList.contains("dialog") && target.open) target.close();
   });
-
-  // store(key, fallback) — JSON state in localStorage that never throws (a
-  // private window or a full quota falls back to memory): {get, set, update}.
   function store(key, fallback) {
     var memory;
-    // Set while the last write did not reach localStorage: what is stored
-    // there is older than memory until a write goes through again.
     var unsaved = false;
     var initial = function () { return fallback === undefined ? undefined : JSON.parse(JSON.stringify(fallback)); };
     function get() {
@@ -927,7 +776,7 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
         try {
           var raw = localStorage.getItem(key);
           if (raw != null) return JSON.parse(raw);
-        } catch (e) { /* storage unavailable: memory below */ }
+        } catch (e) { }
       }
       return memory !== undefined ? memory : initial();
     }
@@ -943,9 +792,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     }
     return { get: get, set: set, update: function (fn) { return set(fn(get())); } };
   }
-
-  // mock — seeded random data, so a page asks for 90 days of numbers in one
-  // line instead of writing them out; the same seed gives the same data.
   var FIRST = ["Ana", "Bruno", "Carla", "Diego", "Eduarda", "Felipe", "Gabriela", "Henrique", "Isabela", "João",
     "Larissa", "Marcos", "Natália", "Otávio", "Paula", "Rafael", "Sofia", "Thiago", "Vanessa", "Lucas"];
   var LAST = ["Silva", "Santos", "Oliveira", "Souza", "Pereira", "Costa", "Rodrigues", "Almeida", "Nascimento", "Lima",
@@ -954,7 +800,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
   var CITIES = ["São Paulo, SP", "Rio de Janeiro, RJ", "Belo Horizonte, MG", "Curitiba, PR", "Porto Alegre, RS",
     "Salvador, BA", "Recife, PE", "Fortaleza, CE", "Brasília, DF", "Goiânia, GO", "Campinas, SP", "Florianópolis, SC",
     "Manaus, AM", "Belém, PA", "Vitória, ES", "Natal, RN"];
-
   function createMock(seed) {
     var state = seed >>> 0;
     var names = 0;
@@ -977,18 +822,12 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
       },
       pick: pick,
       chance: function (p) { return random() < p; },
-      // There are 360 first/last pairs. A page that draws until the name is
-      // new (do { … } while (used.has(name))) froze the tab past them, so
-      // later draws widen the space: a second surname after 200 (6,480), a
-      // middle initial after 4,000.
       name: function () {
         names++;
         var middle = names > 4000 ? pick(INITIALS) + ". " : "";
         return pick(FIRST) + " " + middle + (names > 200 ? pick(LAST) + " " : "") + pick(LAST);
       },
       city: function () { return pick(CITIES); },
-      // series(n, {start, trend, noise, min, decimals}) — a walk: each value
-      // moves by trend (fraction per step) plus up to ±noise of itself.
       series: function (n, opts) {
         opts = opts || {};
         var value = opts.start == null ? 100 : opts.start;
@@ -1000,8 +839,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
         }
         return out;
       },
-      // dates(n, {end?, step?: "day" | "week" | "month"}) — ISO dates
-      // (YYYY-MM-DD), oldest first, ending at end (default: today).
       dates: function (n, opts) {
         opts = opts || {};
         var end = opts.end ? new Date(opts.end) : new Date();
@@ -1014,8 +851,6 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
         }
         return out;
       },
-      // rows(n, spec) — n objects; each spec value is a function(i), a list
-      // to pick from, or a constant.
       rows: function (n, spec) {
         var out = [];
         for (var i = 0; i < n; i++) {
@@ -1031,14 +866,12 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
     };
     return mock;
   }
-
   window.skipShell = { fmt: fmt };
   window.skipChart = { bar: bar, line: line, donut: donut };
   window.skipUI = { table: table, kpis: kpis, badge: badge, tabs: tabs, toast: toast };
   window.skipStore = store;
   window.skipMock = createMock(20261022);
 })();
-
 </script>
 <style>
 :root {
@@ -1149,7 +982,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 .copied { display: none; color: #4ade80; font-size: 0.85rem; margin-left: 10px; }
 .contact-box h3 { font-size: 1.6rem; margin: 0 0 10px; }
 .contact-box .btn-row { margin-top: 18px; }
-
 @media (max-width: 767px) { .brand-logo { max-width: 220px; } }
 .credits { font-size: 0.78rem; color: #52525b; margin-top: 36px; text-align: center; }
 @media (max-width: 860px) {
@@ -1164,10 +996,20 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 .mobile-cards { display: flex; }
 .stats { grid-template-columns: 1fr; }
 }
+/* Histórico de medalhas */
+.medal-section { margin-top: 56px; }
+.medal-list { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 10px; }
+.medal-list li { display: flex; gap: 12px; align-items: flex-start; padding-bottom: 10px; border-bottom: 1px solid #27272a; }
+.medal-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.medal-list strong { display: block; font-size: 0.92rem; color: #fafafa; font-weight: 600; line-height: 1.35; }
+.medal-list small { display: block; font-size: 0.78rem; color: #a1a1aa; margin-top: 2px; }
+.medal { flex-shrink: 0; font-size: 0.72rem; letter-spacing: 0.08em; padding: 4px 9px; border-radius: 999px; border: 1px solid; min-width: 62px; text-align: center; }
+.medal.ouro { color: #facc15; border-color: rgba(250,204,21,0.45); background: rgba(250,204,21,0.08); }
+.medal.prata { color: #d4d4d8; border-color: rgba(212,212,216,0.45); background: rgba(212,212,216,0.08); }
+.medal.bronze { color: #d97706; border-color: rgba(217,119,6,0.45); background: rgba(217,119,6,0.08); }
 </style>
 </head>
 <body>
-
 <header class="topbar">
 <div class="shell-container topbar-inner">
 <a class="logo" href="#inicio">IRMÃOS <span>KTRINQ</span></a>
@@ -1185,7 +1027,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 <a class="btn-red" href="#contato" style="padding:9px 16px;">Apoiar</a>
 </div>
 </header>
-
 <section class="hero" id="inicio" style="border-top:none;">
 <div class="shell-container hero-grid">
 <div>
@@ -1203,7 +1044,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 </div>
 </div>
 </section>
-
 <section id="atletas">
 <div class="shell-container">
 <div class="sec-head">
@@ -1239,7 +1079,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 </div>
 </article>
 </div>
-
 <div style="margin-top:56px;">
 <h3 style="font-size:2rem;">HIGHLIGHTS</h3>
 <p class="muted">Veja Arthur e Davi em ação.</p>
@@ -1262,7 +1101,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 </div>
 </div>
 </section>
-
 <section id="campanha">
 <div class="shell-container camp-text">
 <span class="pill">Objetivo</span>
@@ -1274,7 +1112,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 <p class="muted">Valores detalhados na seção de metas e transparência.</p>
 </div>
 </section>
-
 <section id="metas">
 <div class="shell-container">
 <div class="sec-head">
@@ -1299,7 +1136,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 </div>
 </div>
 </section>
-
 <section id="transparencia">
 <div class="shell-container">
 <div class="sec-head">
@@ -1323,7 +1159,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 </div>
 </div>
 </section>
-
 <section id="resultados">
 <div class="shell-container">
 <div class="sec-head">
@@ -1336,66 +1171,44 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 <figure><img src="img/podio-2.jpg" alt="Pódio de Arthur" onerror="this.style.display='none'"><figcaption>Arthur • Prata • Pódio SulAmericano IBJJF 2026</figcaption></figure>
 <figure><img src="img/podio-3.jpg" alt="Pódio de Davi" onerror="this.style.display='none'"><figcaption>Davi • Bronze • Pódio JEBS 2026</figcaption></figure>
 <figure><img src="img/podio-4.jpg" alt="Pódio de Davi" onerror="this.style.display='none'"><figcaption>Davi • Ouro • Pódio Estadual FJJD-ES 2026</figcaption></figure>
-         <div class="medal-section">
-        <h3 style="font-size:2rem;margin-top:56px;">HISTÓRICO DE MEDALHAS</h3>
-        <p class="muted">Conquistas de Arthur e Davi nas temporadas 2025 e 2026.</p>
+</div>
 
-        <div class="hl-grid" style="margin-top:24px;">
-
-          <div class="athlete-card">
-            <h3 style="font-size:1.6rem;">ARTHUR CATRINQUE</h3>
-            <div class="badges"><span>BJJ</span><span>Faixa Branca</span><span>Gracie Barra</span></div>
-            <ul class="medal-list">
-              <li><span class="medal ouro">OURO</span><div><strong>4ª etapa Estadual FJJD-ES</strong><small>Nov 2025</small></div></li>
-              <li><span class="medal prata">PRATA</span><div><strong>Copa Pódio</strong><small>Nov 2025</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>Abu Dhabi AJP Tour — Guarapari</strong><small>Fev 2026</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>1ª, 2ª e 3ª etapas Estadual FJJD-ES</strong><small>Mar, Jul e Set 2026</small></div></li>
-              <li><span class="medal prata">PRATA</span><div><strong>Sul-Americano IBJJF</strong><small>Set 2026</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>3ª etapa Estadual FJJES</strong><small>Out 2026</small></div></li>
-            </ul>
-          </div>
-                     <div class="athlete-card">
-            <h3 style="font-size:1.6rem;">DAVI CATRINQUE</h3>
-            <div class="badges"><span>BJJ</span><span>Judô</span><span>Faixa Cinza</span><span>Gracie Barra</span></div>
-            <ul class="medal-list">
-              <li><span class="medal ouro">OURO</span><div><strong>4ª etapa Estadual FJJD-ES</strong><small>Nov 2025</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>Abu Dhabi AJP Tour — Guarapari</strong><small>Fev 2026</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>1ª e 2ª etapas Estadual FJJD-ES</strong><small>Mar e Jul 2026</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>3ª etapa Estadual FJJES</strong><small>Out 2026</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>2ª etapa Estadual de Judô FEJ</strong><small>Abr 2026</small></div></li>
-              <li><span class="medal bronze">BRONZE</span><div><strong>3ª etapa Estadual de Judô FEJ</strong><small>Jul 2026</small></div></li>
-              <li><span class="medal bronze">BRONZE</span><div><strong>Seletiva dos JJES</strong><small>Jul 2026</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>Seletiva do JEBS</strong><small>Jul 2026</small></div></li>
-              <li><span class="medal bronze">BRONZE</span><div><strong>Jogos Escolares Brasileiros (JEBS)</strong><small>Set 2026</small></div></li>
-            </ul>
-          </div>
-
-        </div>
-      </div>
-
-          <div class="athlete-card">
-            <h3 style="font-size:1.6rem;">DAVI CATRINQUE</h3>
-            <div class="badges"><span>BJJ</span><span>Judô</span><span>Faixa Cinza</span><span>Gracie Barra</span></div>
-            <ul class="medal-list">
-              <li><span class="medal ouro">OURO</span><div><strong>4ª etapa Estadual FJJD-ES</strong><small>Nov 2025</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>Abu Dhabi AJP Tour — Guarapari</strong><small>Fev 2026</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>1ª e 2ª etapas Estadual FJJD-ES</strong><small>Mar e Jul 2026</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>3ª etapa Estadual FJJES</strong><small>Out 2026</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>2ª etapa Estadual de Judô FEJ</strong><small>Abr 2026</small></div></li>
-              <li><span class="medal bronze">BRONZE</span><div><strong>3ª etapa Estadual de Judô FEJ</strong><small>Jul 2026</small></div></li>
-              <li><span class="medal bronze">BRONZE</span><div><strong>Seletiva dos JJES</strong><small>Jul 2026</small></div></li>
-              <li><span class="medal ouro">OURO</span><div><strong>Seletiva do JEBS</strong><small>Jul 2026</small></div></li>
-              <li><span class="medal bronze">BRONZE</span><div><strong>Jogos Escolares Brasileiros (JEBS)</strong><small>Set 2026</small></div></li>
-            </ul>
-          </div>
-
-        </div>
-      </div>
+<div class="medal-section">
+<h3 style="font-size:2rem;">HISTÓRICO DE MEDALHAS</h3>
+<p class="muted">Conquistas de Arthur e Davi nas temporadas 2025 e 2026.</p>
+<div class="hl-grid" style="margin-top:24px;">
+<div class="athlete-card">
+<h3 style="font-size:1.6rem;">ARTHUR CATRINQUE</h3>
+<div class="badges"><span>BJJ</span><span>Faixa Branca</span><span>Gracie Barra</span></div>
+<ul class="medal-list">
+<li><span class="medal ouro">OURO</span><div><strong>4ª etapa Estadual FJJD-ES</strong><small>Nov 2025</small></div></li>
+<li><span class="medal prata">PRATA</span><div><strong>Copa Pódio</strong><small>Nov 2025</small></div></li>
+<li><span class="medal ouro">OURO</span><div><strong>Abu Dhabi AJP Tour — Guarapari</strong><small>Fev 2026</small></div></li>
+<li><span class="medal ouro">OURO</span><div><strong>1ª, 2ª e 3ª etapas Estadual FJJD-ES</strong><small>Mar, Jul e Set 2026</small></div></li>
+<li><span class="medal prata">PRATA</span><div><strong>Sul-Americano IBJJF</strong><small>Set 2026</small></div></li>
+<li><span class="medal ouro">OURO</span><div><strong>3ª etapa Estadual FJJES</strong><small>Out 2026</small></div></li>
+</ul>
+</div>
+<div class="athlete-card">
+<h3 style="font-size:1.6rem;">DAVI CATRINQUE</h3>
+<div class="badges"><span>BJJ</span><span>Judô</span><span>Faixa Cinza</span><span>Gracie Barra</span></div>
+<ul class="medal-list">
+<li><span class="medal ouro">OURO</span><div><strong>4ª etapa Estadual FJJD-ES</strong><small>Nov 2025</small></div></li>
+<li><span class="medal ouro">OURO</span><div><strong>Abu Dhabi AJP Tour — Guarapari</strong><small>Fev 2026</small></div></li>
+<li><span class="medal ouro">OURO</span><div><strong>1ª e 2ª etapas Estadual FJJD-ES</strong><small>Mar e Jul 2026</small></div></li>
+<li><span class="medal ouro">OURO</span><div><strong>3ª etapa Estadual FJJES</strong><small>Out 2026</small></div></li>
+<li><span class="medal ouro">OURO</span><div><strong>2ª etapa Estadual de Judô FEJ</strong><small>Abr 2026</small></div></li>
+<li><span class="medal bronze">BRONZE</span><div><strong>3ª etapa Estadual de Judô FEJ</strong><small>Jul 2026</small></div></li>
+<li><span class="medal bronze">BRONZE</span><div><strong>Seletiva dos JJES</strong><small>Jul 2026</small></div></li>
+<li><span class="medal ouro">OURO</span><div><strong>Seletiva do JEBS</strong><small>Jul 2026</small></div></li>
+<li><span class="medal bronze">BRONZE</span><div><strong>Jogos Escolares Brasileiros (JEBS)</strong><small>Set 2026</small></div></li>
+</ul>
 </div>
 </div>
-</section>
+</div>
 
-<section id="empresas">
+</div>
+</section><section id="empresas">
 <div class="shell-container">
 <div class="sec-head">
 <span class="pill">Patrocínio</span>
@@ -1411,7 +1224,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 <a class="btn-red" href="https://wa.me/5527998725195?text=Ol%C3%A1%21%20Tenho%20interesse%20em%20patrocinar%20os%20irm%C3%A3os%20KtrinQ.%20Podemos%20conversar%3F" target="_blank" rel="noopener">Quero falar sobre patrocínio</a>
 </div>
 </section>
-
 <section id="temporada-2027">
 <div class="shell-container">
 <div class="sec-head">
@@ -1432,8 +1244,8 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 </table>
 </div>
 <p class="note">Calendário sujeito a datas oficiais, classificação esportiva, disponibilidade de vagas e confirmação dos organizadores.</p>
+</div>
 </section>
-
 <section id="apoiar">
 <div class="shell-container" style="text-align:center;">
 <span class="pill">Gratidão e propósito</span>
@@ -1442,7 +1254,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 <a class="btn-red" href="#contato">Faça parte dessa jornada</a>
 </div>
 </section>
-
 <section id="familia">
 <div class="shell-container">
 <figure style="margin:0; border-radius:16px; overflow:hidden; border:1px solid #27272a;">
@@ -1451,7 +1262,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 </figure>
 </div>
 </section>
-
 <section id="master">
 <div class="shell-container">
 <div class="sec-head">
@@ -1475,7 +1285,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 <p class="cta-line">Sua empresa pode ser a próxima. <a href="https://wa.me/5527998725195?text=Ol%C3%A1%21%20Tenho%20interesse%20em%20patrocinar%20os%20irm%C3%A3os%20KtrinQ.%20Podemos%20conversar%3F" target="_blank" rel="noopener" style="color:var(--accent-text);">Falar sobre patrocínio</a></p>
 </div>
 </section>
-
 <section id="faq">
 <div class="shell-container" style="max-width:860px;">
 <div class="sec-head">
@@ -1501,7 +1310,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 </details>
 </div>
 </section>
-
 <footer id="contato" class="footer-pix" style="padding:72px 0;">
 <div class="shell-container footer-grid">
 <div class="pix-box">
@@ -1525,7 +1333,6 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 </div>
 <div class="shell-container credits">Irmãos Ktrinq • Campanha Arthur e Davi Catrinque • Temporada 2026 • Criação e design independentes. Imagens meramente ilustrativas.</div>
 </footer>
-
 <script>
 const META = 5500;
 let doacoes = [];
@@ -1535,11 +1342,9 @@ const WA_MESSAGES = {
 contato: "Olá! Quero falar sobre a campanha dos irmãos KtrinQ.",
 patrocinio: "Olá! Tenho interesse em patrocinar os irmãos KtrinQ. Podemos conversar?"
 };
-
 function fmtBRL(v) {
 return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
-
 function renderTransparencia() {
 const arrecadado = doacoes.reduce((s, d) => s + d.valor, 0);
 const falta = Math.max(0, META - arrecadado);
@@ -1558,7 +1363,6 @@ wall.appendChild(s);
 });
 document.getElementById("wallEmpty").style.display = doacoes.length ? "none" : "block";
 }
-
 function setupMenu() {
 const btn = document.getElementById("menuToggle");
 const nav = document.getElementById("navLinks");
@@ -1568,7 +1372,6 @@ btn.setAttribute("aria-expanded", String(open));
 });
 nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open")));
 }
-
 function setupPix() {
 const btn = document.getElementById("copyPix");
 const msg = document.getElementById("copiedMsg");
@@ -1585,7 +1388,6 @@ fallbackCopy(done);
 }
 });
 }
-
 function fallbackCopy(done) {
 const ta = document.createElement("textarea");
 ta.value = PIX_KEY;
@@ -1594,14 +1396,12 @@ ta.select();
 try { document.execCommand("copy"); done(); } catch (e) {}
 document.body.removeChild(ta);
 }
-
 function setupWhatsApp() {
 document.querySelectorAll("[data-wa]").forEach(el => {
 const text = encodeURIComponent(WA_MESSAGES[el.dataset.wa] || "");
 el.href = `https://wa.me/${WA_NUMBER}?text=${text}`;
 });
 }
-
 function setupImageCandidates() {
 document.querySelectorAll("img[data-candidates]").forEach(img => {
 const list = img.dataset.candidates.split("|");
@@ -1621,7 +1421,6 @@ img.replaceWith(span);
 img.src = list[0];
 });
 }
-
 document.addEventListener("DOMContentLoaded", () => {
 setupMenu();
 setupPix();
