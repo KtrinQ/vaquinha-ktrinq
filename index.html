@@ -328,6 +328,16 @@ table.shell-table td.skip-table-empty { color: var(--text-muted); text-align: ce
 .toaster .toast[data-type="success"] .toast-content { border-left: 3px solid var(--success); }
 .toaster .toast[data-type="error"] .toast-content { border-left: 3px solid var(--danger); }
 
+    .medal-section { margin-top: 8px; }
+    .medal-list { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 10px; }
+    .medal-list li { display: flex; gap: 12px; align-items: flex-start; padding-bottom: 10px; border-bottom: 1px solid #27272a; }
+    .medal-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .medal-list strong { display: block; font-size: 0.92rem; color: #fafafa; font-weight: 600; line-height: 1.35; }
+    .medal-list small { display: block; font-size: 0.78rem; color: #a1a1aa; margin-top: 2px; }
+    .medal { flex-shrink: 0; font-size: 0.72rem; letter-spacing: 0.08em; padding: 4px 9px; border-radius: 999px; border: 1px solid; min-width: 62px; text-align: center; }
+    .medal.ouro { color: #facc15; border-color: rgba(250,204,21,0.45); background: rgba(250,204,21,0.08); }
+    .medal.prata { color: #d4d4d8; border-color: rgba(212,212,216,0.45); background: rgba(212,212,216,0.08); }
+    .medal.bronze { color: #d97706; border-color: rgba(217,119,6,0.45); background: rgba(217,119,6,0.08); }
 </style>
 <script>
 /* Skip artifact shell — fixed helpers served beside every artifact. */
@@ -1326,6 +1336,61 @@ details p { color: #a1a1aa; line-height: 1.6; margin: 12px 0 0; }
 <figure><img src="img/podio-2.jpg" alt="Pódio de Arthur" onerror="this.style.display='none'"><figcaption>Arthur • Prata • Pódio SulAmericano IBJJF 2026</figcaption></figure>
 <figure><img src="img/podio-3.jpg" alt="Pódio de Davi" onerror="this.style.display='none'"><figcaption>Davi • Bronze • Pódio JEBS 2026</figcaption></figure>
 <figure><img src="img/podio-4.jpg" alt="Pódio de Davi" onerror="this.style.display='none'"><figcaption>Davi • Ouro • Pódio Estadual FJJD-ES 2026</figcaption></figure>
+         <div class="medal-section">
+        <h3 style="font-size:2rem;margin-top:56px;">HISTÓRICO DE MEDALHAS</h3>
+        <p class="muted">Conquistas de Arthur e Davi nas temporadas 2025 e 2026.</p>
+
+        <div class="hl-grid" style="margin-top:24px;">
+
+          <div class="athlete-card">
+            <h3 style="font-size:1.6rem;">ARTHUR CATRINQUE</h3>
+            <div class="badges"><span>BJJ</span><span>Faixa Branca</span><span>Gracie Barra</span></div>
+            <ul class="medal-list">
+              <li><span class="medal ouro">OURO</span><div><strong>4ª etapa Estadual FJJD-ES</strong><small>Nov 2025</small></div></li>
+              <li><span class="medal prata">PRATA</span><div><strong>Copa Pódio</strong><small>Nov 2025</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>Abu Dhabi AJP Tour — Guarapari</strong><small>Fev 2026</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>1ª, 2ª e 3ª etapas Estadual FJJD-ES</strong><small>Mar, Jul e Set 2026</small></div></li>
+              <li><span class="medal prata">PRATA</span><div><strong>Sul-Americano IBJJF</strong><small>Set 2026</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>3ª etapa Estadual FJJES</strong><small>Out 2026</small></div></li>
+            </ul>
+          </div>
+                     <div class="athlete-card">
+            <h3 style="font-size:1.6rem;">DAVI CATRINQUE</h3>
+            <div class="badges"><span>BJJ</span><span>Judô</span><span>Faixa Cinza</span><span>Gracie Barra</span></div>
+            <ul class="medal-list">
+              <li><span class="medal ouro">OURO</span><div><strong>4ª etapa Estadual FJJD-ES</strong><small>Nov 2025</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>Abu Dhabi AJP Tour — Guarapari</strong><small>Fev 2026</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>1ª e 2ª etapas Estadual FJJD-ES</strong><small>Mar e Jul 2026</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>3ª etapa Estadual FJJES</strong><small>Out 2026</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>2ª etapa Estadual de Judô FEJ</strong><small>Abr 2026</small></div></li>
+              <li><span class="medal bronze">BRONZE</span><div><strong>3ª etapa Estadual de Judô FEJ</strong><small>Jul 2026</small></div></li>
+              <li><span class="medal bronze">BRONZE</span><div><strong>Seletiva dos JJES</strong><small>Jul 2026</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>Seletiva do JEBS</strong><small>Jul 2026</small></div></li>
+              <li><span class="medal bronze">BRONZE</span><div><strong>Jogos Escolares Brasileiros (JEBS)</strong><small>Set 2026</small></div></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+          <div class="athlete-card">
+            <h3 style="font-size:1.6rem;">DAVI CATRINQUE</h3>
+            <div class="badges"><span>BJJ</span><span>Judô</span><span>Faixa Cinza</span><span>Gracie Barra</span></div>
+            <ul class="medal-list">
+              <li><span class="medal ouro">OURO</span><div><strong>4ª etapa Estadual FJJD-ES</strong><small>Nov 2025</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>Abu Dhabi AJP Tour — Guarapari</strong><small>Fev 2026</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>1ª e 2ª etapas Estadual FJJD-ES</strong><small>Mar e Jul 2026</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>3ª etapa Estadual FJJES</strong><small>Out 2026</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>2ª etapa Estadual de Judô FEJ</strong><small>Abr 2026</small></div></li>
+              <li><span class="medal bronze">BRONZE</span><div><strong>3ª etapa Estadual de Judô FEJ</strong><small>Jul 2026</small></div></li>
+              <li><span class="medal bronze">BRONZE</span><div><strong>Seletiva dos JJES</strong><small>Jul 2026</small></div></li>
+              <li><span class="medal ouro">OURO</span><div><strong>Seletiva do JEBS</strong><small>Jul 2026</small></div></li>
+              <li><span class="medal bronze">BRONZE</span><div><strong>Jogos Escolares Brasileiros (JEBS)</strong><small>Set 2026</small></div></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
 </div>
 </div>
 </section>
